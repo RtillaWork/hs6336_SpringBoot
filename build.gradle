@@ -17,6 +17,12 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+jar {
+	manifest {
+		attributes 'Main-class': 'org.hyperskill.demo.DemoApplication'
+	}
+}
+	
 test {
 	useJUnitPlatform()
 }
