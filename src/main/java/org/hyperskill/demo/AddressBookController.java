@@ -13,30 +13,40 @@ public class AddressBookController {
         private ConcurrentHashMap<String, String> addressBook = new ConcurrentHashMap<>();
 
         @PostMapping("/addressbook")
-        public void postAddressBook(@RequestParam String name, @RequestParam String address) {
+        public String postAddressBook(@RequestParam String name, @RequestParam String address) {
+            final String successMessage = "Success: %s added to address book";
             addressBook.put(name, address);
+            return String.format(successMessage, name);
         }
 
         @GetMapping("/addressbook")
         public ResponseEntity<ConcurrentHashMap<String, String>> getAddressBook() {
             // TODO learn and fix optional parameters
-            final ConcurrentHashMap<String, String> errorEmptyAddressBookMessage =
-                    new ConcurrentHashMap<>(Map.of("Error","The address book is empty"));
+            final String errorMessage = "The address book is empty";
+            final ConcurrentHashMap<String, String> errorHashMap =
+                    new ConcurrentHashMap<>(Map.of("Error",errorMessage));
 
             if (addressBook.isEmpty()) {
-                return new ResponseEntity<>(errorEmptyAddressBookMessage, HttpStatus.I_AM_A_TEAPOT);
+                return new ResponseEntity<>(errorHashMap, HttpStatus.I_AM_A_TEAPOT);
             } else {
                 return new ResponseEntity<>(addressBook, HttpStatus.OK);
             }
         }
 
         @GetMapping("/addressbook/{name}")
-        public ResponseEntity<String> getAddressBookByName(@PathVariable String name) {
-            final String errorMissingNameFromAddressBookMessage = "No such name";
+        public ResponseEntity<String> getAddressByName(@PathVariable String name) {
+            final String errorMessage = "Error: %s No such name";
                 return
                         new ResponseEntity<>(addressBook.getOrDefault(name,
-                                errorMissingNameFromAddressBookMessage), HttpStatus.OK);
+                                String.format(errorMessage, name)), HttpStatus.OK);
                 // TODO in case of missing name, should not return 200 OK
+        }
+
+        @DeleteMapping("/addressbook")
+        public String removeByName(@RequestParam String name) {
+            final String successMessage = "Success: Address book entry for name %s has been deleted";
+            addressBook.remove(name);
+            return String.format(successMessage, name);
         }
 
 } // End AddressBookController
