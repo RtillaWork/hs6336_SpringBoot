@@ -1,4 +1,7 @@
 package org.hyperskill.demo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +28,8 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{id}")
-    public Task getTaskById(@PathVariable int id) {
-        return this.taskList.get(id);
+    public ResponseEntity<Task> getTaskById(@PathVariable int id) {
+        return new ResponseEntity<>(this.taskList.get(id), HttpStatus.OK);
     }
 
 }
