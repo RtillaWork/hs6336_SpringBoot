@@ -1,7 +1,12 @@
 package org.hyperskill.demo;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.*;
-import java.util.*;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class ExercicesController {
@@ -44,13 +49,11 @@ public class ExercicesController {
         public ResponseEntity<ExerciceTask> getExerciceTask(@PathVariable int id) {
 
             try {
-               ExerciceTask taskById = tasks.stream().filter(t -> t.getId() == id)
-                       .findFirst()
-                       .orElseThrow();
-               return new ResponseEntity<>(this.tasks.get(id - 405), HttpStatus.OK);
-            }
-
-            catch (Exception e) {
+                ExerciceTask taskById = tasks.stream().filter(t -> t.getId() == id)
+                        .findFirst()
+                        .orElseThrow();
+                return new ResponseEntity<>(this.tasks.get(id - 405), HttpStatus.OK);
+            } catch (Exception e) {
                 return new ResponseEntity<>(this.defaultTask, HttpStatus.OK);
             }
         }
